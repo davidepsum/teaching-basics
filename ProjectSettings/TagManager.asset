@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Antigua
+  - Media
+  - Moderna
+  - "Contempor\xE1nea"
+  - Manager
+  - Casilla
   layers:
   - Default
   - TransparentFX
