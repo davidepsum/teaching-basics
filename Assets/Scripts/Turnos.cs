@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-/*
+
 public class Turnos : MonoBehaviour
 {
     public bool turnoJugador = true;
     public Manager manager;
+    public Cartas[] cartas;
 
     private void Start()
     {
@@ -17,7 +18,17 @@ public class Turnos : MonoBehaviour
             manager = obj.GetComponent<Manager>();
         }
     }
+    public void AsignarCarta(GameObject carta, int casilla)
+    {
+        cartas[casilla] = GetComponent<Cartas>();
+    }
+    public void RecibirDaño(int casilla, int daño)
+    {
+        cartas[casilla].defensa -= daño;
+    }
+}
 
+    /*
     public void SiguienteTurno()
     {
         turnoJugador = !turnoJugador;

@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: a7874d0f587938949a10590ee522318c
+guid: 0417c0e0bbe4b324288e012cf517d7c0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7235079774592477090
-    second: "Legi\xF3n-Romana(4-6-2026-14_11)_0"
+      213: 379839707151470570
+    second: "Invenci\xF3n-de-la-Escritura(5-6-2026-9_14)_0"
   - first:
-      213: -8764023837026719155
-    second: "Legi\xF3n-Romana(4-6-2026-14_11)_1"
+      213: 6348844190058083523
+    second: "Invenci\xF3n-de-la-Escritura(5-6-2026-9_14)_1"
   - first:
-      213: 4012791878225499317
-    second: "Legi\xF3n-Romana(4-6-2026-14_11)_2"
+      213: -7326117164246494645
+    second: "Invenci\xF3n-de-la-Escritura(5-6-2026-9_14)_2"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,7 +132,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Legi\xF3n-Romana(4-6-2026-14_11)_0"
+      name: "Invenci\xF3n-de-la-Escritura(5-6-2026-9_14)_0"
       rect:
         serializedVersion: 2
         x: 3
@@ -146,14 +146,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e585dc13745d79b90800000000000000
-      internalID: -7235079774592477090
+      spriteID: aef0a508336754500800000000000000
+      internalID: 379839707151470570
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Legi\xF3n-Romana(4-6-2026-14_11)_1"
+      name: "Invenci\xF3n-de-la-Escritura(5-6-2026-9_14)_1"
       rect:
         serializedVersion: 2
         x: 9
@@ -167,14 +167,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d4a67f601ceef5680800000000000000
-      internalID: -8764023837026719155
+      spriteID: 3c4f6ba3720ab1850800000000000000
+      internalID: 6348844190058083523
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Legi\xF3n-Romana(4-6-2026-14_11)_2"
+      name: "Invenci\xF3n-de-la-Escritura(5-6-2026-9_14)_2"
       rect:
         serializedVersion: 2
         x: 0
@@ -188,8 +188,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5b4143bd3fc40b730800000000000000
-      internalID: 4012791878225499317
+      spriteID: b42123a2147645a90800000000000000
+      internalID: -7326117164246494645
       vertices: []
       indices: 
       edges: []
@@ -205,9 +205,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      "Legi\xF3n-Romana(4-6-2026-14_11)_0": -7235079774592477090
-      "Legi\xF3n-Romana(4-6-2026-14_11)_1": -8764023837026719155
-      "Legi\xF3n-Romana(4-6-2026-14_11)_2": 4012791878225499317
+      "Invenci\xF3n-de-la-Escritura(5-6-2026-9_14)_0": 379839707151470570
+      "Invenci\xF3n-de-la-Escritura(5-6-2026-9_14)_1": 6348844190058083523
+      "Invenci\xF3n-de-la-Escritura(5-6-2026-9_14)_2": -7326117164246494645
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -40,6 +40,7 @@ public class Cartas : MonoBehaviour
     public bool enMesa;
     public bool enCasilla;
     public Manager manager;
+    public Turnos turnos;
     public int casilla;
     public Vector2 posicioninicial;
 
@@ -49,7 +50,8 @@ public class Cartas : MonoBehaviour
 
         if (objetoManager != null)
         {
-            manager = objetoManager.GetComponent<Manager>();
+            manager = objetoManager.GetComponent<Manager>(); 
+            turnos = objetoManager.GetComponent<Turnos>(); 
         }
         posicioninicial = transform.position;
         ActualizarEstadísticas();
@@ -73,16 +75,19 @@ public class Cartas : MonoBehaviour
 
     public void OnMouseDrag()
     {
-        if (enMesa == false)
+        if (manager.turno == 0)
         {
-            Vector3 posicion = Input.mousePosition;
-            Vector3 posicionMundo = Camera.main.ScreenToWorldPoint(posicion);
-            posicionMundo.z = 0;
-            transform.position = posicionMundo;
+            if (enMesa == false)
+            {
+                Vector3 posicion = Input.mousePosition;
+                Vector3 posicionMundo = Camera.main.ScreenToWorldPoint(posicion);
+                posicionMundo.z = 0;
+                transform.position = posicionMundo;
 
+            }
         }
     }
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Dentro");
         if (other.gameObject.CompareTag("Casilla"))
@@ -113,7 +118,40 @@ public class Cartas : MonoBehaviour
 
         }
     }
-
+    public void Update()
+    {
+        if (manager.turno > 4)
+        {
+            manager.turno = 0 ;
+            manager.pasaTurnos.interactable = true ;
+        }
+        if (manager.turno != 0)
+        {
+            Debug.Log(manager.turno);
+            activarEfecto();
+            manager.turno++;
+        }
+    }
+    public void activarEfecto()
+    {
+        Debug.Log("Ejecutado");
+        if (casilla==manager.turno)
+        {
+           
+        }
+    }
+    public void RealizarDaño()
+    {
+        turnos.RecibirDaño(casilla,ataque);
+    }
+    public void RecibirDaño(int pupa)
+    {
+        defensa-=pupa;
+        if (defensa <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
     /*
     public void curar(int cantidad)
     {

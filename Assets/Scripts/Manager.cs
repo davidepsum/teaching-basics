@@ -11,7 +11,9 @@ public class Manager : MonoBehaviour
     public GameObject panelEleccion;
     public GameObject panelPartida;
     public bool[] fila1=new bool[4];
-    
+    public int turno;
+    public Button pasaTurnos;
+
     private void Start()
     {
         for (int i = 0; i < baraja.Length; i++)
@@ -24,6 +26,7 @@ public class Manager : MonoBehaviour
         }
         panelEleccion.SetActive(true);
         panelPartida.SetActive(false);
+        turno = 0;
     }
 
     public void ElegirMazo(int numero)
@@ -31,5 +34,14 @@ public class Manager : MonoBehaviour
         panelEleccion.SetActive(false);
         panelPartida.SetActive(true);
         baraja[numero].SetActive(true);
+    }
+
+    public void PasarTurno()
+    {
+        turno++;
+        if (turno > 0)
+        {
+            pasaTurnos.interactable = false;
+        }
     }
 }
