@@ -41,7 +41,11 @@ public class Cartas : MonoBehaviour
     public bool enCasilla;
     public Manager manager;
     public Turnos turnos;
+    public Comportamientos comportamientos;
     public int casilla;
+    public bool aliado;
+    //[HideInInspector]
+    public GameObject casillaactual;
     public Vector2 posicioninicial;
 
     private void Start()
@@ -50,19 +54,13 @@ public class Cartas : MonoBehaviour
 
         if (objetoManager != null)
         {
-            manager = objetoManager.GetComponent<Manager>(); 
-            turnos = objetoManager.GetComponent<Turnos>(); 
+            manager = objetoManager.GetComponent<Manager>();
+            turnos = objetoManager.GetComponent<Turnos>();
+            comportamientos = objetoManager.GetComponent<Comportamientos>();
         }
         posicioninicial = transform.position;
         ActualizarEstadísticas();
     }
-    public void ActualizarEstadísticas()
-    {
-        texto_ataque.text = ataque.ToString();
-        texto_coste.text = coste.ToString();
-        texto_defensa.text = defensa.ToString();
-    }
-
     public void recibirDaño(int cantidad)
     {
         manager.vida -=cantidad;
@@ -72,7 +70,6 @@ public class Cartas : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     public void OnMouseDrag()
     {
         if (manager.turno == 0)
@@ -87,17 +84,16 @@ public class Cartas : MonoBehaviour
             }
         }
     }
-    private void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerStay2D(Collider2D other)
     {
-        Debug.Log("Dentro");
         if (other.gameObject.CompareTag("Casilla"))
         {
             enCasilla = true;
+            casillaactual = other.gameObject;
         }
     }
-    private void OnTriggerExit2D(Collider2D other)
+    public void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("Fuera");
         if (other.CompareTag("Casilla"))
         {
             enCasilla = false;
@@ -107,23 +103,62 @@ public class Cartas : MonoBehaviour
     {
         if (enMesa == false)
         {
-            if (enCasilla == true) 
+            if (enCasilla == true)
             {
-                //colocarEnCasilla();
+                for (int i = 0; i < manager.fila1.Length; i++)
+                {
+                    if (casillaactual.name == "Casilla " + (i+1))
+                    {
+                        if (manager.fila1[i] == false)
+                        {
+                            enMesa = true;
+                            transform.position = casillaactual.transform.position;
+                            casilla = i;
+                            manager.fila1[i] = true;
+                            aliado = true;
+                            comportamientos.AsignarAliado(gameObject, casilla);
+                        }
+                        else
+                        {
+                            transform.position = posicioninicial;
+                        }
+                    }
+                }
+                for (int i = 0; i < manager.fila2.Length; i++)
+                {
+                    if (casillaactual.name == "Casilla B " + (i + 1))
+                    {
+                        if (manager.fila2[i] == false)
+                        {
+                            enMesa = true;
+                            transform.position = casillaactual.transform.position;
+                            casilla = i;
+                            manager.fila2[i] = true;
+                            aliado = false;
+                            comportamientos.AsignarEnemigo(gameObject, casilla);
+                        }
+                        else
+                        {
+                            transform.position = posicioninicial;
+                        }
+                    }
+                }
             }
             else
             {
                 transform.position = posicioninicial;
             }
-
         }
+
     }
+
     public void Update()
     {
         if (manager.turno > 4)
         {
             manager.turno = 0 ;
             manager.pasaTurnos.interactable = true ;
+            manager.turnoaliado= !manager.turnoaliado ;
         }
         if (manager.turno != 0)
         {
@@ -132,17 +167,40 @@ public class Cartas : MonoBehaviour
             manager.turno++;
         }
     }
+    
     public void activarEfecto()
     {
-        Debug.Log("Ejecutado");
         if (casilla==manager.turno)
         {
-           
+            if (aliado == manager.turnoaliado)
+            {
+                comportamientos.RealizarDaño(ataque,casilla,aliado);
+                comportamientos.Actualizar();
+            }
         }
     }
+    public void ActualizarEstadísticas()
+    {
+        texto_ataque.text = ataque.ToString();
+        texto_coste.text = coste.ToString();
+        texto_defensa.text = defensa.ToString();
+    }
+    void dañoEnemigo(int cantidad)
+    {/*
+        Cartas[] enemigos = GameObject.FindObjectsOfType<Cartas>();
+        for (int i = 0; i < enemigos.Length; i++)
+        {
+            if (enemigos[i].CompareTag("Enemigo"))
+            {
+                enemigos[i].recibirDaño(cantidad);
+                return;
+            }
+        }*/
+    }
+
     public void RealizarDaño()
     {
-        turnos.RecibirDaño(casilla,ataque);
+        
     }
     public void RecibirDaño(int pupa)
     {
@@ -152,6 +210,8 @@ public class Cartas : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+    
+
     /*
     public void curar(int cantidad)
     {

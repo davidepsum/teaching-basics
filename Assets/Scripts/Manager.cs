@@ -11,7 +11,9 @@ public class Manager : MonoBehaviour
     public GameObject panelEleccion;
     public GameObject panelPartida;
     public bool[] fila1=new bool[4];
+    public bool[] fila2=new bool[4];
     public int turno;
+    public bool turnoaliado;
     public Button pasaTurnos;
 
     private void Start()

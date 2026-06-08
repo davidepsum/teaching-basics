@@ -6,9 +6,9 @@ using TMPro;
 
 public class Turnos : MonoBehaviour
 {
-    public bool turnoJugador = true;
     public Manager manager;
-    public Cartas[] cartas;
+    public Cartas[] cartas = new Cartas[4];
+    public Cartas[] enemigos = new Cartas[4];
 
     private void Start()
     {
@@ -20,11 +20,48 @@ public class Turnos : MonoBehaviour
     }
     public void AsignarCarta(GameObject carta, int casilla)
     {
-        cartas[casilla] = GetComponent<Cartas>();
+        cartas[casilla] = carta.GetComponent<Cartas>();
     }
-    public void RecibirDaño(int casilla, int daño)
+    public void AsignarEnemigo(GameObject carta, int casilla)
     {
-        cartas[casilla].defensa -= daño;
+        enemigos[casilla] = carta.GetComponent<Cartas>();
+    }
+
+    public void RecibirDaño(int casilla, int daño,bool aliado)
+    {
+        if (aliado == true)
+        {
+            enemigos[casilla].defensa -= daño;
+        }
+        if (cartas[casilla] != null)
+        {
+            manager.vida-=daño;
+        }
+    }
+    public void TurnoEnemigo()
+    {
+        for (int i = 0; i < enemigos.Length; i++)
+        {
+            if ((enemigos[i] != null) && (enemigos[i].enMesa))
+            {
+                Atacar(i);
+            }
+        }
+    }
+    void Atacar(int casilla)
+    {
+        if (cartas[casilla] != null && cartas[casilla].enMesa)
+        {
+            cartas[casilla].recibirDaño(enemigos[casilla].ataque);
+        }
+        else
+        {
+            manager.vida -= enemigos[casilla].ataque;
+            if (manager.vida < 0)
+            {
+                manager.vida = 0;
+            }
+        }
     }
 }
 
