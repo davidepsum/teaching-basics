@@ -40,7 +40,6 @@ public class Cartas : MonoBehaviour
     public bool enMesa;
     public bool enCasilla;
     public Manager manager;
-    public Turnos turnos;
     public Comportamientos comportamientos;
     public int casilla;
     public bool aliado;
@@ -55,24 +54,14 @@ public class Cartas : MonoBehaviour
         if (objetoManager != null)
         {
             manager = objetoManager.GetComponent<Manager>();
-            turnos = objetoManager.GetComponent<Turnos>();
             comportamientos = objetoManager.GetComponent<Comportamientos>();
         }
         posicioninicial = transform.position;
         ActualizarEstadísticas();
     }
-    public void recibirDaño(int cantidad)
-    {
-        manager.vida -=cantidad;
-        if (manager.vida <= 0)
-        {
-            manager.vida = 0;
-            Destroy(gameObject);
-        }
-    }
     public void OnMouseDrag()
     {
-        if (manager.turno == 0)
+        if (comportamientos.turno == 0)
         {
             if (enMesa == false)
             {
@@ -152,65 +141,27 @@ public class Cartas : MonoBehaviour
 
     }
 
-    public void Update()
-    {
-        if (manager.turno > 4)
-        {
-            manager.turno = 0 ;
-            manager.pasaTurnos.interactable = true ;
-            manager.turnoaliado= !manager.turnoaliado ;
-        }
-        if (manager.turno != 0)
-        {
-            Debug.Log(manager.turno);
-            activarEfecto();
-            manager.turno++;
-        }
-    }
-    
-    public void activarEfecto()
-    {
-        if (casilla==manager.turno)
-        {
-            if (aliado == manager.turnoaliado)
-            {
-                comportamientos.RealizarDaño(ataque,casilla,aliado);
-                comportamientos.Actualizar();
-            }
-        }
-    }
     public void ActualizarEstadísticas()
     {
         texto_ataque.text = ataque.ToString();
         texto_coste.text = coste.ToString();
         texto_defensa.text = defensa.ToString();
     }
-    void dañoEnemigo(int cantidad)
-    {/*
-        Cartas[] enemigos = GameObject.FindObjectsOfType<Cartas>();
-        for (int i = 0; i < enemigos.Length; i++)
-        {
-            if (enemigos[i].CompareTag("Enemigo"))
-            {
-                enemigos[i].recibirDaño(cantidad);
-                return;
-            }
-        }*/
-    }
 
-    public void RealizarDaño()
+    public void activarEfecto()
     {
-        
+        comportamientos.RealizarDaño(ataque,casilla,aliado);
     }
-    public void RecibirDaño(int pupa)
+    public void Morir()
     {
-        defensa-=pupa;
         if (defensa <= 0)
         {
-            gameObject.SetActive(false);
+            enMesa=false;
+            enCasilla=false;
+            casilla = 0;
+            transform.position = posicioninicial;
         }
     }
-    
 
     /*
     public void curar(int cantidad)

@@ -5,12 +5,12 @@ using UnityEngine.UI;
 using TMPro;
 public class Comportamientos : MonoBehaviour
 {
-    public int vidaAliado=100;
-    public int vidaEnemigo=100;
-
     public Manager manager;
     public Cartas[] aliados = new Cartas[4];
     public Cartas[] enemigos = new Cartas[4];
+    public int turno=0;
+    public bool turnoaliado;
+    public Button pasaTurnos;
     private void Start()
     {
         GameObject obj = GameObject.FindWithTag("Manager");
@@ -18,6 +18,7 @@ public class Comportamientos : MonoBehaviour
         {
             manager = obj.GetComponent<Manager>();
         }
+        turnoaliado = true;
     }
     public void AsignarAliado(GameObject carta, int casilla)
     {
@@ -31,27 +32,58 @@ public class Comportamientos : MonoBehaviour
     {
         if (aliado == true)
         {
-            enemigos[casilla].defensa -= daño;
-
-            if (enemigos[casilla] != null)
+            if (enemigos[casilla] == null)
             {
-                vidaEnemigo -= daño;
+                manager.vidaEnemigo -= daño;
+            }
+            else
+            {
+                enemigos[casilla].defensa -= daño;
             }
         }
         if (aliado == false)
         {
-            aliados[casilla].defensa -= daño;
-            if (enemigos[casilla] != null)
+            if (aliados[casilla] == null)
             {
-                vidaAliado -= daño;
+                manager.vidaAliado -= daño;
+            }
+            else
+            {
+                aliados[casilla].defensa -= daño;
             }
         }
     }
-    public void Actualizar()
+    public void EmpezarTurno()
     {
-        for (int i = 0; i < enemigos.Length; i++)
+        pasaTurnos.interactable = false;
+        do
         {
-
-        }
+            turno++;
+            Debug.Log(turno);
+            if ((turnoaliado == true) && (aliados[turno - 1] != null))
+            {
+                aliados[turno - 1].activarEfecto();
+                Debug.Log("Efectuado");
+            }
+            if ((turnoaliado == false)&& (enemigos[turno-1] != null))
+            {
+                enemigos[turno - 1].activarEfecto();
+                Debug.Log("Efectuado");
+            }
+            for (int i = 0; i < aliados.Length; i++)
+            {
+                if (aliados[i] != null)
+                {
+                    aliados[i].Morir();
+                }
+                if (enemigos[i] != null)
+                {
+                    enemigos[i].Morir();
+                }
+            }
+        }while (turno < 4);
+        turno = 0;
+        pasaTurnos.interactable = true;
+        turnoaliado = !turnoaliado;
     }
 }

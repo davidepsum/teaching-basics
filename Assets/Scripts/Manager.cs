@@ -6,15 +6,13 @@ using TMPro;
 
 public class Manager : MonoBehaviour
 {
-    public int vida;
+    public int vidaAliado = 100;
+    public int vidaEnemigo = 100;
     public GameObject[] baraja=new GameObject[4];
     public GameObject panelEleccion;
     public GameObject panelPartida;
     public bool[] fila1=new bool[4];
     public bool[] fila2=new bool[4];
-    public int turno;
-    public bool turnoaliado;
-    public Button pasaTurnos;
 
     private void Start()
     {
@@ -28,7 +26,6 @@ public class Manager : MonoBehaviour
         }
         panelEleccion.SetActive(true);
         panelPartida.SetActive(false);
-        turno = 0;
     }
 
     public void ElegirMazo(int numero)
@@ -36,14 +33,5 @@ public class Manager : MonoBehaviour
         panelEleccion.SetActive(false);
         panelPartida.SetActive(true);
         baraja[numero].SetActive(true);
-    }
-
-    public void PasarTurno()
-    {
-        turno++;
-        if (turno > 0)
-        {
-            pasaTurnos.interactable = false;
-        }
     }
 }

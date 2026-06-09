@@ -803,7 +803,6 @@ MonoBehaviour:
   enMesa: 0
   enCasilla: 0
   manager: {fileID: 0}
-  turnos: {fileID: 0}
   comportamientos: {fileID: 0}
   casilla: 0
   aliado: 0
@@ -1218,9 +1217,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1211561076}
-        m_TargetAssemblyTypeName: Manager, Assembly-CSharp
-        m_MethodName: PasarTurno
+      - m_Target: {fileID: 1211561079}
+        m_TargetAssemblyTypeName: Comportamientos, Assembly-CSharp
+        m_MethodName: EmpezarTurno
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2015,7 +2014,6 @@ MonoBehaviour:
   enMesa: 0
   enCasilla: 0
   manager: {fileID: 0}
-  turnos: {fileID: 0}
   comportamientos: {fileID: 0}
   casilla: 0
   aliado: 0
@@ -2188,7 +2186,6 @@ MonoBehaviour:
   enMesa: 0
   enCasilla: 0
   manager: {fileID: 0}
-  turnos: {fileID: 0}
   comportamientos: {fileID: 0}
   casilla: 0
   aliado: 0
@@ -2345,7 +2342,6 @@ MonoBehaviour:
   enMesa: 0
   enCasilla: 0
   manager: {fileID: 0}
-  turnos: {fileID: 0}
   comportamientos: {fileID: 0}
   casilla: 0
   aliado: 0
@@ -3705,7 +3701,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1211561077}
   - component: {fileID: 1211561076}
-  - component: {fileID: 1211561078}
   - component: {fileID: 1211561079}
   m_Layer: 0
   m_Name: Manager
@@ -3726,7 +3721,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda66f92701f75c4a8864055d4e68e4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vida: 0
+  vidaAliado: 100
+  vidaEnemigo: 100
   baraja:
   - {fileID: 1298734980}
   - {fileID: 1284540459}
@@ -3736,9 +3732,6 @@ MonoBehaviour:
   panelPartida: {fileID: 1620880093}
   fila1: 00000000
   fila2: 00000000
-  turno: 0
-  turnoaliado: 0
-  pasaTurnos: {fileID: 376703304}
 --- !u!4 &1211561077
 Transform:
   m_ObjectHideFlags: 0
@@ -3754,25 +3747,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1211561078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1211561075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27b130a284a057f438a657775604abf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manager: {fileID: 0}
-  cartas: []
-  enemigos:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &1211561079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3785,8 +3759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dcfbe05b0689ec46ad660d354398f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaAliado: 100
-  vidaEnemigo: 100
   manager: {fileID: 0}
   aliados:
   - {fileID: 0}
@@ -3798,6 +3770,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  turno: 0
+  turnoaliado: 0
+  pasaTurnos: {fileID: 376703304}
 --- !u!1 &1267011477
 GameObject:
   m_ObjectHideFlags: 0
@@ -4677,7 +4652,6 @@ MonoBehaviour:
   enMesa: 0
   enCasilla: 0
   manager: {fileID: 0}
-  turnos: {fileID: 0}
   comportamientos: {fileID: 0}
   casilla: 0
   aliado: 0
@@ -6072,7 +6046,6 @@ MonoBehaviour:
   enMesa: 0
   enCasilla: 0
   manager: {fileID: 0}
-  turnos: {fileID: 0}
   comportamientos: {fileID: 0}
   casilla: 0
   aliado: 0
