@@ -32,20 +32,24 @@ public class Cartas : MonoBehaviour
 {
     public TipoCarta tipo;
     public int ataque;
+    private int ataqueInicial;
     public TMP_Text texto_ataque;
     public int defensa;
+    private int defensaInicial;
     public TMP_Text texto_defensa;
     public int coste;
+    private int costeInicial;
     public TMP_Text texto_coste;
+    public int buff;
+    public TMP_Text texto_buff;
     public bool enMesa;
     public bool enCasilla;
-    public Manager manager;
-    public Comportamientos comportamientos;
-    public int casilla;
+    [SerializeField] private int casilla;
+    [SerializeField] private GameObject casillaactual;
     public bool aliado;
-    //[HideInInspector]
-    public GameObject casillaactual;
-    public Vector2 posicioninicial;
+    private Vector2 posicioninicial;
+    private Manager manager;
+    private Comportamientos comportamientos;
 
     private void Start()
     {
@@ -58,6 +62,9 @@ public class Cartas : MonoBehaviour
         }
         posicioninicial = transform.position;
         ActualizarEstadísticas();
+        ataqueInicial = ataque;
+        defensaInicial = defensa;
+        costeInicial = coste;
     }
     public void OnMouseDrag()
     {
@@ -94,16 +101,17 @@ public class Cartas : MonoBehaviour
         {
             if (enCasilla == true)
             {
-                for (int i = 0; i < manager.fila1.Length; i++)
+                for (int i = 0; i < comportamientos.aliados.Length; i++)
                 {
                     if (casillaactual.name == "Casilla " + (i+1))
                     {
-                        if (manager.fila1[i] == false)
+                        //Cambiar el if inferior para que solo se puedan colocar las cartas en el lado de quien es el turno
+                        // if ((comportamientos.aliados[i] == null) && (comportamientos.turnoaliado == true))
+                        if (comportamientos.aliados[i] == null)
                         {
                             enMesa = true;
                             transform.position = casillaactual.transform.position;
                             casilla = i;
-                            manager.fila1[i] = true;
                             aliado = true;
                             comportamientos.AsignarAliado(gameObject, casilla);
                         }
@@ -113,16 +121,17 @@ public class Cartas : MonoBehaviour
                         }
                     }
                 }
-                for (int i = 0; i < manager.fila2.Length; i++)
+                for (int i = 0; i < comportamientos.enemigos.Length; i++)
                 {
                     if (casillaactual.name == "Casilla B " + (i + 1))
                     {
-                        if (manager.fila2[i] == false)
+                        //Cambiar el if inferior para que solo se puedan colocar las cartas en el lado de quien es el turno
+                        //if ((comportamientos.enemigos[i] == null) && (comportamientos.turnoaliado==false))
+                        if (comportamientos.enemigos[i] == null)
                         {
                             enMesa = true;
                             transform.position = casillaactual.transform.position;
                             casilla = i;
-                            manager.fila2[i] = true;
                             aliado = false;
                             comportamientos.AsignarEnemigo(gameObject, casilla);
                         }
@@ -138,28 +147,173 @@ public class Cartas : MonoBehaviour
                 transform.position = posicioninicial;
             }
         }
-
     }
 
+    public void OnMouseEnter()
+    {
+        if (enMesa==false)
+        {
+            Vector2 nuevaPosicion= new Vector2(posicioninicial.x, posicioninicial.y + 1f);
+            transform.position = nuevaPosicion;
+        }
+    }
+    public void OnMouseExit()
+    {
+        if (enMesa==false)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, posicioninicial, 5f);
+        }
+    }
+    public void asignarAliado()
+    {
+        //if (comportamientos.turnoaliado==true)
+    }
     public void ActualizarEstadísticas()
     {
         texto_ataque.text = ataque.ToString();
         texto_coste.text = coste.ToString();
         texto_defensa.text = defensa.ToString();
+        if (texto_buff != null)
+        {
+            texto_buff.text = buff.ToString();
+        }
     }
-
+    public void activarAlColocar()
+    {
+        if ((tipo == TipoCarta.LegionRomana) || (tipo==TipoCarta.Escritura))
+        {
+            comportamientos.ReforzarAliados(casilla, aliado, buff, tipo);
+        }
+    }
     public void activarEfecto()
     {
-        comportamientos.RealizarDaño(ataque,casilla,aliado);
+        comportamientos.RealizarDaño(ataque, casilla, aliado);
+        
+        if (tipo == TipoCarta.MurallaChina)
+        {
+            
+        }
+
+        if (tipo == TipoCarta.LegionRomana)
+        {
+            comportamientos.RealizarDaño(ataque, casilla, aliado);
+        }
+        /*
+        if (tipo == TipoCarta.JulioCesar)
+        {
+            sacrificarVidaJugador(3);
+            buffAliados(0, 3);
+        }
+
+        if (tipo == TipoCarta.Escritura)
+        {
+            buffAliados(2, 2);
+        }
+
+        if (tipo == TipoCarta.PesteNegra)
+        {
+            dañoAreaEnemigos(3);
+            bajarAtaqueEnemigos(1);
+        }
+
+        if (tipo == TipoCarta.Cruzadas)
+        {
+            avanzarHaciaEnemigos();
+        }
+
+        if (tipo == TipoCarta.Inquisicion)
+        {
+            dañoAleatorioEnemigos(4);
+        }
+
+        if (tipo == TipoCarta.Feudalismo)
+        {
+            buffAliados(3, 0);
+            sacrificarVidaJugador(2);
+        }
+
+        if (tipo == TipoCarta.Constantinopla)
+        {
+            aliadosAtacanDeNuevo();
+        }
+
+        if (tipo == TipoCarta.Renacimiento)
+        {
+            buffAliados(2, 2);
+        }
+
+        if (tipo == TipoCarta.Guerra30)
+        {
+            dañoTodos(2);
+        }
+
+        if (tipo == TipoCarta.Iglesias)
+        {
+            recolocarAliados();
+        }
+
+        if (tipo == TipoCarta.Colonizacion)
+        {
+            convertirEnemigos();
+        }
+
+        if (tipo == TipoCarta.TierraNoPlana)
+        {
+            enemigosSeAutodañan(2);
+        }
+
+        if (tipo == TipoCarta.Holocausto)
+        {
+            quemarEnemigos(4);
+        }
+
+        if (tipo == TipoCarta.Covid)
+        {
+            dañoAreaEnemigos(2);
+            saltarTurnoEnemigo();
+        }
+
+        if (tipo == TipoCarta.Internet)
+        {
+            bloquearDañoJugador();
+        }
+
+        if (tipo == TipoCarta.Capitalismo)
+        {
+            robarMitadStatsAliados();
+        }
+
+        if (tipo == TipoCarta.Calentamiento)
+        {
+            dañoPorTurno(1);
+        }
+        */
     }
     public void Morir()
     {
         if (defensa <= 0)
         {
-            enMesa=false;
+            if (tipo == TipoCarta.JulioCesar)
+            {
+                comportamientos.ReforzarAliados(casilla, aliado,buff, tipo);
+            }
+            ataque = ataqueInicial;
+            defensa = defensaInicial;
+            coste = costeInicial;
+            enMesa =false;
             enCasilla=false;
+            if (aliado == true)
+            {
+                comportamientos.aliados[casilla] = null;
+            }
+            else
+            {
+                comportamientos.enemigos[casilla] = null;
+            }
+            comportamientos.cartas[casilla] = null;
             casilla = 0;
             transform.position = posicioninicial;
+            ActualizarEstadísticas();
         }
     }
 

@@ -6,6 +6,7 @@ using TMPro;
 public class Comportamientos : MonoBehaviour
 {
     public Manager manager;
+    public Cartas[] cartas = new Cartas[8];
     public Cartas[] aliados = new Cartas[4];
     public Cartas[] enemigos = new Cartas[4];
     public int turno=0;
@@ -23,10 +24,25 @@ public class Comportamientos : MonoBehaviour
     public void AsignarAliado(GameObject carta, int casilla)
     {
         aliados[casilla] = carta.GetComponent<Cartas>();
+        AsignarCartas(true, casilla);
     }
     public void AsignarEnemigo(GameObject carta, int casilla)
     {
         enemigos[casilla] = carta.GetComponent<Cartas>();
+        AsignarCartas(false, casilla);
+    }
+    public void AsignarCartas(bool aliado,int casilla)
+    {
+        if (aliado == true)
+        {
+            cartas[casilla] = aliados[casilla];
+        }
+        else
+        {
+            cartas[casilla+4]= enemigos[casilla];
+            casilla += 4;
+        }
+        cartas[casilla].activarAlColocar();
     }
     public void RealizarDaño(int daño,int casilla,bool aliado)
     {
@@ -53,31 +69,45 @@ public class Comportamientos : MonoBehaviour
             }
         }
     }
+    public void ReforzarAliados(int casilla,bool aliado, int cantidad,TipoCarta tipo)
+    {
+        for (int i=0; i<cartas.Length; i++)
+        {
+            if ((cartas[i] != null) && (cartas[i].aliado == aliado) && (tipo != cartas[i].tipo))
+            {
+                if (tipo == TipoCarta.Escritura)
+                {
+                    cartas[i].ataque+=cantidad;
+                }
+                cartas[i].defensa += cantidad;
+                cartas[i].ActualizarEstadísticas();
+            }
+        }
+    }
     public void EmpezarTurno()
     {
         pasaTurnos.interactable = false;
         do
         {
             turno++;
-            Debug.Log(turno);
             if ((turnoaliado == true) && (aliados[turno - 1] != null))
             {
                 aliados[turno - 1].activarEfecto();
-                Debug.Log("Efectuado");
             }
             if ((turnoaliado == false)&& (enemigos[turno-1] != null))
             {
                 enemigos[turno - 1].activarEfecto();
-                Debug.Log("Efectuado");
             }
             for (int i = 0; i < aliados.Length; i++)
             {
                 if (aliados[i] != null)
                 {
+                    aliados[i].ActualizarEstadísticas();
                     aliados[i].Morir();
                 }
                 if (enemigos[i] != null)
                 {
+                    enemigos[i].ActualizarEstadísticas();
                     enemigos[i].Morir();
                 }
             }
@@ -86,4 +116,19 @@ public class Comportamientos : MonoBehaviour
         pasaTurnos.interactable = true;
         turnoaliado = !turnoaliado;
     }
+
+    /*
+    //Función para comprobar si una carta está en la mesa
+    private bool ComprobarEnMesa(Cartas carta)
+    {
+        if (carta != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    */
 }
