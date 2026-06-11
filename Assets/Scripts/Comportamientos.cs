@@ -20,6 +20,7 @@ public class Comportamientos : MonoBehaviour
             manager = obj.GetComponent<Manager>();
         }
         turnoaliado = true;
+        contadorMurallas = 0;
     }
     public void AsignarAliado(GameObject carta, int casilla)
     {
@@ -69,15 +70,30 @@ public class Comportamientos : MonoBehaviour
             }
         }
     }
+    public void DañarEnArea(bool aliado, int cantidad)
+    {
+        for (int i = 0; i < cartas.Length; i++)
+        {
+            if ((cartas[i] != null) && (cartas[i].aliado != aliado))
+            {
+                cartas[i].defensa -= cantidad;
+                cartas[i].ActualizarEstadísticas();
+            }
+        }
+    }
     public void ReforzarAliados(int casilla,bool aliado, int cantidad,TipoCarta tipo)
     {
         for (int i=0; i<cartas.Length; i++)
         {
             if ((cartas[i] != null) && (cartas[i].aliado == aliado) && (tipo != cartas[i].tipo))
             {
-                if (tipo == TipoCarta.Escritura)
+                if ((tipo == TipoCarta.Escritura)||(tipo==TipoCarta.Feudalismo))
                 {
                     cartas[i].ataque+=cantidad;
+                }
+                if (tipo == TipoCarta.Feudalismo)
+                {
+                    cartas[i].defensa -= cantidad;
                 }
                 cartas[i].defensa += cantidad;
                 cartas[i].ActualizarEstadísticas();
@@ -124,33 +140,44 @@ public class Comportamientos : MonoBehaviour
             }
         }
     }
-    private int vidaMuralla=-1;
-    public void RestarVida(int cantidad)
+    //Muralla
+    [HideInInspector]
+    public int contadorMurallas = 0;
+    public void RestarVida(int cantidad, TipoCarta tipo, bool aliado)
     {
-        int contador=0;
-        for (int i = 0; i < cartas.Length; i++)
+        contadorMurallas++;
+        if (aliado == true)
         {
-            if ((cartas[i]!=null)&&(cartas[i].tipo == TipoCarta.MurallaChina))
+            for (int i = 0; i < manager.aliados.Length; i++)
             {
-                contador++;
-                if ((vidaMuralla == -1) || (vidaMuralla > cartas[i].defensa))
+                if ((tipo == manager.aliados[i].tipo) && (contadorMurallas > 1))
                 {
-                    vidaMuralla = cartas[i].defensa;
-                }
-                cartas[i].defensa=vidaMuralla;
-            }
-        }
-        if (contador > 1)
-        {
-            for (int i = 0; i < cartas.Length; i++)
-            {
-                if ((cartas[i] != null) && (cartas[i].tipo == TipoCarta.MurallaChina))
-                {
-                    cartas[i].defensa -= cantidad;
-                    cartas[i].ActualizarEstadísticas();
-                    cartas[i].Morir();
+                    manager.aliados[i].defensa -= cantidad;
+                    if (manager.aliados[i].defensa <= 0)
+                    {
+                        contadorMurallas--;
+                    }
+                    manager.aliados[i].ActualizarEstadísticas();
+                    manager.aliados[i].Morir();
                 }
             }
         }
+        else
+        {
+            for (int i = 0; i < manager.enemigos.Length; i++)
+            {
+                if ((tipo == manager.enemigos[i].tipo) && (contadorMurallas > 1))
+                {
+                    manager.enemigos[i].defensa -= cantidad;
+                    if (manager.enemigos[i].defensa <= 0)
+                    {
+                        contadorMurallas--;
+                    }
+                    manager.enemigos[i].ActualizarEstadísticas();
+                    manager.enemigos[i].Morir();
+                }
+            }
+        }
+            
     }
 }

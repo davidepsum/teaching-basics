@@ -24,8 +24,8 @@ public class Manager : MonoBehaviour
     public GameObject panelEleccion;
     public GameObject panelPartida;
 
-    [SerializeField] private Cartas[] aliados;
-    [SerializeField] private Cartas[] enemigos;
+    public Cartas[] aliados;
+    public Cartas[] enemigos;
 
     private void Start()
     {

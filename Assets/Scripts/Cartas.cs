@@ -176,119 +176,92 @@ public class Cartas : MonoBehaviour
     }
     public void activarAlColocar()
     {
-        if ((tipo == TipoCarta.LegionRomana) || (tipo==TipoCarta.Escritura))
+        if ((tipo == TipoCarta.LegionRomana) || (tipo==TipoCarta.Escritura) || (tipo==TipoCarta.Feudalismo))
         {
             comportamientos.ReforzarAliados(casilla, aliado, buff, tipo);
         }
         if (tipo == TipoCarta.MurallaChina)
         {
-            comportamientos.RestarVida(buff);
+            comportamientos.RestarVida(buff,tipo,aliado);
         }
     }
     public void activarEfecto()
     {
-        comportamientos.RealizarDaño(ataque, casilla, aliado);
-        
-        if (tipo == TipoCarta.MurallaChina)
+        if (tipo == TipoCarta.PesteNegra)
         {
-            
+            comportamientos.DañarEnArea(aliado, ataque);
+        }
+        if (tipo == TipoCarta.Cruzadas)
+        {
+            if (aliado == true)
+            {
+                if (comportamientos.enemigos[casilla] == null)
+                {
+                    for (int i = 0; i < comportamientos.enemigos.Length; i++)
+                    {
+                        if ((comportamientos.enemigos[i] != null) && (comportamientos.aliados[i] == null))
+                        {
+                            casilla = i;
+                            i++;
+                            casillaactual = GameObject.Find("Casilla " + i);
+                            transform.position = casillaactual.transform.position;
+                            i = comportamientos.enemigos.Length;
+                        }
+                    }
+                }
+            }
+            if (aliado == false)
+            {
+                if (comportamientos.aliados[casilla] == null)
+                {
+                    for (int i = 0; i < comportamientos.aliados.Length; i++)
+                    {
+                        if ((comportamientos.enemigos[i] == null) && (comportamientos.aliados[i] != null))
+                        {
+                            casilla = i;
+                            i++;
+                            casillaactual = GameObject.Find("Casilla B " + i);
+                            transform.position = casillaactual.transform.position;
+                            i = comportamientos.enemigos.Length;
+                        }
+                    }
+                }
+            }
+            comportamientos.RealizarDaño(ataque, casilla, aliado);
+        }
+        if (tipo == TipoCarta.Inquisicion)
+        {
+            int numero = Random.Range(2, comportamientos.cartas.Length);
+            int numero2;
+            for (int i = 0; i < numero; i++)
+            {
+                numero2 = Random.Range(0, comportamientos.cartas.Length);
+                if (numero2 != casilla)
+                {
+                    if (comportamientos.cartas[numero2] != null)
+                    {
+                        comportamientos.cartas[numero2].defensa -= ataque;
+                    }
+                    else
+                    {
+                        i--;
+                    }
+                }
+            }
+        }
+        if (tipo == TipoCarta.Constantinopla)
+        {
+            comportamientos.turno = 0;
+            comportamientos.RealizarDaño(ataque, casilla, aliado);
         }
 
-        if (tipo == TipoCarta.LegionRomana)
+        else
         {
             comportamientos.RealizarDaño(ataque, casilla, aliado);
         }
-        /*
-        if (tipo == TipoCarta.JulioCesar)
-        {
-            sacrificarVidaJugador(3);
-            buffAliados(0, 3);
-        }
-
-        if (tipo == TipoCarta.Escritura)
-        {
-            buffAliados(2, 2);
-        }
-
-        if (tipo == TipoCarta.PesteNegra)
-        {
-            dañoAreaEnemigos(3);
-            bajarAtaqueEnemigos(1);
-        }
-
-        if (tipo == TipoCarta.Cruzadas)
-        {
-            avanzarHaciaEnemigos();
-        }
-
-        if (tipo == TipoCarta.Inquisicion)
-        {
-            dañoAleatorioEnemigos(4);
-        }
-
-        if (tipo == TipoCarta.Feudalismo)
-        {
-            buffAliados(3, 0);
-            sacrificarVidaJugador(2);
-        }
-
-        if (tipo == TipoCarta.Constantinopla)
-        {
-            aliadosAtacanDeNuevo();
-        }
-
-        if (tipo == TipoCarta.Renacimiento)
-        {
-            buffAliados(2, 2);
-        }
-
-        if (tipo == TipoCarta.Guerra30)
-        {
-            dañoTodos(2);
-        }
-
-        if (tipo == TipoCarta.Iglesias)
-        {
-            recolocarAliados();
-        }
-
-        if (tipo == TipoCarta.Colonizacion)
-        {
-            convertirEnemigos();
-        }
-
-        if (tipo == TipoCarta.TierraNoPlana)
-        {
-            enemigosSeAutodañan(2);
-        }
-
-        if (tipo == TipoCarta.Holocausto)
-        {
-            quemarEnemigos(4);
-        }
-
-        if (tipo == TipoCarta.Covid)
-        {
-            dañoAreaEnemigos(2);
-            saltarTurnoEnemigo();
-        }
-
-        if (tipo == TipoCarta.Internet)
-        {
-            bloquearDañoJugador();
-        }
-
-        if (tipo == TipoCarta.Capitalismo)
-        {
-            robarMitadStatsAliados();
-        }
-
-        if (tipo == TipoCarta.Calentamiento)
-        {
-            dañoPorTurno(1);
-        }
-        */
     }
+
+    
     public void Morir()
     {
         if (defensa <= 0)
@@ -316,168 +289,4 @@ public class Cartas : MonoBehaviour
             ActualizarEstadísticas();
         }
     }
-
-    /*
-    public void curar(int cantidad)
-    {
-        manager.vida += cantidad;
-    }
-
-    public void sumarAtaque(int cantidad)
-    {
-        ataque = ataque + cantidad;
-    }
-
-    public void sumarDefensa(int cantidad)
-    {
-        defensa = defensa + cantidad;
-    }
-
-    private void colocarEnCasilla()
-    {
-        float x = transform.position.x;
-
-        float[] posiciones = { -3f, -1f, 1f, 3f };
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (x < posiciones[i] && manager.fila1[i] == false)
-            {
-                transform.position = new Vector3(posiciones[i], -3f, 0);
-                manager.fila1[i] = true;
-                enMesa = true;
-                casilla = i;
-                activarEfecto();
-                return;
-            }
-        }
-    }
-
-    public void activarEfecto()
-    {
-        if (tipo == TipoCarta.Espartanos)
-        {
-            ataque = ataque + 5;
-            defensa = defensa + 5;
-        }
-
-        if (tipo == TipoCarta.MurallaChina)
-        {
-            defensa = defensa - 1;
-        }
-
-        if (tipo == TipoCarta.LegionRomana)
-        {
-            dañoEnemigo(4);
-            buffAliados(2, 2);
-        }
-
-        if (tipo == TipoCarta.JulioCesar)
-        {
-            sacrificarVidaJugador(3);
-            buffAliados(0, 3);
-        }
-
-        if (tipo == TipoCarta.Escritura)
-        {
-            buffAliados(2, 2);
-        }
-
-        if (tipo == TipoCarta.PesteNegra)
-        {
-            dañoAreaEnemigos(3);
-            bajarAtaqueEnemigos(1);
-        }
-
-        if (tipo == TipoCarta.Cruzadas)
-        {
-            avanzarHaciaEnemigos();
-        }
-
-        if (tipo == TipoCarta.Inquisicion)
-        {
-            dañoAleatorioEnemigos(4);
-        }
-
-        if (tipo == TipoCarta.Feudalismo)
-        {
-            buffAliados(3, 0);
-            sacrificarVidaJugador(2);
-        }
-
-        if (tipo == TipoCarta.Constantinopla)
-        {
-            aliadosAtacanDeNuevo();
-        }
-
-        if (tipo == TipoCarta.Renacimiento)
-        {
-            buffAliados(2, 2);
-        }
-
-        if (tipo == TipoCarta.Guerra30)
-        {
-            dañoTodos(2);
-        }
-
-        if (tipo == TipoCarta.Iglesias)
-        {
-            recolocarAliados();
-        }
-
-        if (tipo == TipoCarta.Colonizacion)
-        {
-            convertirEnemigos();
-        }
-
-        if (tipo == TipoCarta.TierraNoPlana)
-        {
-            enemigosSeAutodañan(2);
-        }
-
-        if (tipo == TipoCarta.Holocausto)
-        {
-            quemarEnemigos(4);
-        }
-
-        if (tipo == TipoCarta.Covid)
-        {
-            dañoAreaEnemigos(2);
-            saltarTurnoEnemigo();
-        }
-
-        if (tipo == TipoCarta.Internet)
-        {
-            bloquearDañoJugador();
-        }
-
-        if (tipo == TipoCarta.Capitalismo)
-        {
-            robarMitadStatsAliados();
-        }
-
-        if (tipo == TipoCarta.Calentamiento)
-        {
-            dañoPorTurno(1);
-        }
-    }
-
-    void dañoEnemigo(int cantidad) {}
-    void dañoAreaEnemigos(int cantidad) {}
-    void bajarAtaqueEnemigos(int cantidad) {}
-    void avanzarHaciaEnemigos() {}
-    void dañoAleatorioEnemigos(int cantidad) {}
-    void aliadosAtacanDeNuevo() {}
-    void dañoTodos(int cantidad) {}
-    void recolocarAliados() {}
-    void convertirEnemigos() {}
-    void enemigosSeAutodañan(int cantidad) {}
-    void quemarEnemigos(int cantidad) {}
-    void saltarTurnoEnemigo() {}
-    void bloquearDañoJugador() {}
-    void robarMitadStatsAliados() {}
-    void dañoPorTurno(int cantidad) {}
-    void buffAliados(int atk, int def) {}
-    void sacrificarVidaJugador(int cantidad) {}
-    */
 }
