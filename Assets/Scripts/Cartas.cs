@@ -164,10 +164,6 @@ public class Cartas : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, posicioninicial, 5f);
         }
     }
-    public void asignarAliado()
-    {
-        //if (comportamientos.turnoaliado==true)
-    }
     public void ActualizarEstadísticas()
     {
         texto_ataque.text = ataque.ToString();
@@ -183,6 +179,10 @@ public class Cartas : MonoBehaviour
         if ((tipo == TipoCarta.LegionRomana) || (tipo==TipoCarta.Escritura))
         {
             comportamientos.ReforzarAliados(casilla, aliado, buff, tipo);
+        }
+        if (tipo == TipoCarta.MurallaChina)
+        {
+            comportamientos.RestarVida(buff);
         }
     }
     public void activarEfecto()

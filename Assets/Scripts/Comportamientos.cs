@@ -115,20 +115,42 @@ public class Comportamientos : MonoBehaviour
         turno = 0;
         pasaTurnos.interactable = true;
         turnoaliado = !turnoaliado;
+        manager.MostrarCartas();
+        for (int i = 0;i < cartas.Length; i++)
+        {
+            if (cartas[i] != null)
+            {
+                cartas[i].gameObject.SetActive(true);
+            }
+        }
     }
-
-    /*
-    //Función para comprobar si una carta está en la mesa
-    private bool ComprobarEnMesa(Cartas carta)
+    private int vidaMuralla=-1;
+    public void RestarVida(int cantidad)
     {
-        if (carta != null)
+        int contador=0;
+        for (int i = 0; i < cartas.Length; i++)
         {
-            return true;
+            if ((cartas[i]!=null)&&(cartas[i].tipo == TipoCarta.MurallaChina))
+            {
+                contador++;
+                if ((vidaMuralla == -1) || (vidaMuralla > cartas[i].defensa))
+                {
+                    vidaMuralla = cartas[i].defensa;
+                }
+                cartas[i].defensa=vidaMuralla;
+            }
         }
-        else
+        if (contador > 1)
         {
-            return false;
+            for (int i = 0; i < cartas.Length; i++)
+            {
+                if ((cartas[i] != null) && (cartas[i].tipo == TipoCarta.MurallaChina))
+                {
+                    cartas[i].defensa -= cantidad;
+                    cartas[i].ActualizarEstadísticas();
+                    cartas[i].Morir();
+                }
+            }
         }
     }
-    */
 }

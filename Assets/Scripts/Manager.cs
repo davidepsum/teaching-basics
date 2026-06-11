@@ -12,6 +12,8 @@ public class Manager : MonoBehaviour
     public TMP_Text eleccion;
     public Button empezar;
     public Button[] botones=new Button[4];
+
+    public Comportamientos comportamientos;
     
     public GameObject[] baraja=new GameObject[4];
     public string tagAliada;
@@ -22,11 +24,16 @@ public class Manager : MonoBehaviour
     public GameObject panelEleccion;
     public GameObject panelPartida;
 
-    public Cartas[] aliados=new Cartas[5];
-    public Cartas[] enemigos=new Cartas[5];
+    [SerializeField] private Cartas[] aliados;
+    [SerializeField] private Cartas[] enemigos;
 
     private void Start()
     {
+        GameObject obj = GameObject.FindWithTag("Manager");
+        if (obj != null)
+        {
+            comportamientos = obj.GetComponent<Comportamientos>();
+        }
         for (int i = 0; i < baraja.Length; i++)
         {
             baraja[i].SetActive(false);
@@ -80,15 +87,47 @@ public class Manager : MonoBehaviour
         panelEleccion.SetActive(false);
         panelPartida.SetActive(true);
         barajaAliada.SetActive(true);
+        barajaEnemiga.SetActive(true);
         GameObject[] cartas = GameObject.FindGameObjectsWithTag(tagAliada);
-        GameObject[] cartas2 = GameObject.FindGameObjectsWithTag(tagEnemiga);
-        for (int i = 0; i < cartas.Length; i++)
+        aliados=new Cartas[cartas.Length];
+        for (int i = 0; i < aliados.Length; i++)
         {
             aliados[i] = cartas[i].GetComponent<Cartas>();
-            enemigos[i] = cartas2[i].GetComponent<Cartas>();
             aliados[i].aliado = true;
-            enemigos[i].aliado=false;
         }
-        barajaEnemiga.SetActive(true);
+        GameObject[] cartas2 = GameObject.FindGameObjectsWithTag(tagEnemiga);
+        enemigos = new Cartas[cartas2.Length];
+        for (int i = 0; i < enemigos.Length; i++)
+        {
+            enemigos[i] = cartas2[i].GetComponent<Cartas>();
+            enemigos[i].aliado=false;
+            enemigos[i].gameObject.SetActive(false);
+        }
+    }
+    public void MostrarCartas()
+    {
+        if (comportamientos.turnoaliado == true)
+        {
+            for (int i = 0; i < aliados.Length; i++)
+            {
+                aliados[i].gameObject.SetActive(true);
+            }
+            for (int i = 0; i < enemigos.Length; i++)
+            {
+                enemigos[i].gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < aliados.Length; i++)
+            {
+                aliados[i].gameObject.SetActive(false);
+            }
+            for (int i = 0; i < enemigos.Length; i++)
+            {
+                enemigos[i].gameObject.SetActive(true);
+            }
+        }
+        
     }
 }
