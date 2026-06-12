@@ -8,6 +8,13 @@ public class Manager : MonoBehaviour
 {
     public int vidaAliado = 100;
     public int vidaEnemigo = 100;
+    public TMP_Text vidaTextoAliado;
+    public TMP_Text vidaTextoEnemigo;
+
+    public int manaAliado;
+    public TMP_Text manaTextoAliado;
+    public int manaEnemigo;
+    public TMP_Text manaTextoEnemigo;
 
     public TMP_Text eleccion;
     public Button empezar;
@@ -23,6 +30,8 @@ public class Manager : MonoBehaviour
 
     public GameObject panelEleccion;
     public GameObject panelPartida;
+    public GameObject panelFinal;
+    public TMP_Text victoria;
 
     public Cartas[] aliados;
     public Cartas[] enemigos;
@@ -41,10 +50,42 @@ public class Manager : MonoBehaviour
         }
         panelEleccion.SetActive(true);
         panelPartida.SetActive(false);
+        panelFinal.SetActive(false);
         empezar.gameObject.SetActive(false);
         eleccion.text = "Elige el mazo del jugador 1:";
+        vidaAliado = 100;
+        vidaEnemigo = 100;
+        manaAliado = 10;
+        manaEnemigo = 10;
     }
-
+    public void Update()
+    {
+        vidaTextoAliado.text=vidaAliado.ToString();
+        vidaTextoEnemigo.text=vidaEnemigo.ToString();
+        manaTextoAliado.text = manaAliado.ToString();
+        manaTextoEnemigo.text = manaEnemigo.ToString();
+        if (manaEnemigo > 10)
+        {
+            manaEnemigo = 10;
+        }
+        if (manaAliado > 10)
+        {
+            manaAliado = 10;
+        }
+        if ((vidaEnemigo <= 0) || (vidaAliado <= 0))
+        {
+            panelPartida.SetActive(false);
+            panelFinal.SetActive(true);
+            if (vidaAliado > 0)
+            {
+                victoria.text = "Jugador 1 gana";
+            }
+            if (vidaEnemigo > 0)
+            {
+                victoria.text = "Jugador 2 gana";
+            }
+        }
+    }
     public string EstablecerBandos(int numero)
     {
         switch (numero)
@@ -128,6 +169,5 @@ public class Manager : MonoBehaviour
                 enemigos[i].gameObject.SetActive(true);
             }
         }
-        
     }
 }

@@ -107,13 +107,14 @@ public class Cartas : MonoBehaviour
                     {
                         //Cambiar el if inferior para que solo se puedan colocar las cartas en el lado de quien es el turno
                         // if ((comportamientos.aliados[i] == null) && (comportamientos.turnoaliado == true))
-                        if (comportamientos.aliados[i] == null)
+                        if ((comportamientos.aliados[i] == null)&&(manager.manaAliado-coste>=0) && (comportamientos.turnoaliado == true))
                         {
                             enMesa = true;
                             transform.position = casillaactual.transform.position;
                             casilla = i;
                             aliado = true;
                             comportamientos.AsignarAliado(gameObject, casilla);
+                            manager.manaAliado-=coste;
                         }
                         else
                         {
@@ -127,13 +128,14 @@ public class Cartas : MonoBehaviour
                     {
                         //Cambiar el if inferior para que solo se puedan colocar las cartas en el lado de quien es el turno
                         //if ((comportamientos.enemigos[i] == null) && (comportamientos.turnoaliado==false))
-                        if (comportamientos.enemigos[i] == null)
+                        if ((comportamientos.enemigos[i] == null)&& (manager.manaEnemigo - coste >= 0) && (comportamientos.turnoaliado == false))
                         {
                             enMesa = true;
                             transform.position = casillaactual.transform.position;
                             casilla = i;
                             aliado = false;
                             comportamientos.AsignarEnemigo(gameObject, casilla);
+                            manager.manaEnemigo -= coste;
                         }
                         else
                         {
@@ -176,13 +178,80 @@ public class Cartas : MonoBehaviour
     }
     public void activarAlColocar()
     {
-        if ((tipo == TipoCarta.LegionRomana) || (tipo==TipoCarta.Escritura) || (tipo==TipoCarta.Feudalismo))
+        if ((tipo == TipoCarta.LegionRomana) || (tipo==TipoCarta.Escritura) || (tipo==TipoCarta.Feudalismo)||(tipo == TipoCarta.Renacimiento))
         {
             comportamientos.ReforzarAliados(casilla, aliado, buff, tipo);
         }
         if (tipo == TipoCarta.MurallaChina)
         {
             comportamientos.RestarVida(buff,tipo,aliado);
+        }/*
+        if (tipo == TipoCarta.Iglesias)
+        {
+            for (int i = 0; 0 < 6; i++)
+            {
+                Debug.Log(i);
+                if ((comportamientos.cartas[i]!=null)&&(comportamientos.cartas[i].aliado==aliado)&&(comportamientos.cartas[i].tipo != tipo))
+                {
+                    comportamientos.cartas[i].enMesa=false;
+                    comportamientos.cartas[i].enCasilla=false;
+                }
+            }
+        }
+        if (tipo == TipoCarta.Colonizacion)
+        {
+            if (aliado == true)
+            {
+                for (int i = 0; 0 < comportamientos.enemigos.Length; i++)
+                {
+                    Debug.Log(i);
+                    if ((comportamientos.enemigos[i] != null) && (comportamientos.aliados[i]==null))
+                    {
+                        comportamientos.enemigos[i].aliado=true;
+                        comportamientos.enemigos[i].casilla = i;
+                        GameObject casiprov = GameObject.Find("Casilla " + i + 1);
+                        comportamientos.enemigos[i].casillaactual = casiprov;
+                        comportamientos.enemigos[i].transform.position = comportamientos.enemigos[i].casillaactual.transform.position;
+
+                    }
+                }
+            }
+            if (aliado == false)
+            {
+                for (int i = 0; 0 < comportamientos.aliados.Length; i++)
+                {
+                    if ((comportamientos.aliados[i] != null) && (comportamientos.enemigos[i] == null))
+                    {
+                        comportamientos.aliados[i].aliado = false;
+                        comportamientos.aliados[i].casilla = i;
+                        Debug.Log(i);
+                        GameObject casiprov=GameObject.Find("Casilla B " + i + 1);
+                        comportamientos.aliados[i].casillaactual = casiprov;
+                        comportamientos.aliados[i].transform.position = comportamientos.aliados[i].casillaactual.transform.position;
+
+                    }
+                }
+            }
+        }*/
+        if (tipo == TipoCarta.Covid)
+        {
+            comportamientos.saltar = true;
+        }
+        if (tipo == TipoCarta.Capitalismo)
+        {
+            for (int i = 0; i < comportamientos.cartas.Length; i++)
+            {
+                if ((comportamientos.cartas[i] != null) && (comportamientos.cartas[i].aliado == aliado)&&(comportamientos.cartas[i].tipo!=TipoCarta.Capitalismo))
+                {
+                    ataque += comportamientos.cartas[i].ataque / 2;
+                    defensa += comportamientos.cartas[i].defensa / 2;
+                    comportamientos.cartas[i].ataque /= 2;
+                    comportamientos.cartas[i].defensa /= 2;
+                    comportamientos.cartas[i].ActualizarEstadísticas();
+                    
+                }
+            }
+            ActualizarEstadísticas();
         }
     }
     public void activarEfecto()
@@ -190,6 +259,17 @@ public class Cartas : MonoBehaviour
         if (tipo == TipoCarta.PesteNegra)
         {
             comportamientos.DañarEnArea(aliado, ataque);
+            for (int i = 0; i < comportamientos.cartas.Length; i++)
+            {
+                if ((comportamientos.cartas[i] != null) && (comportamientos.cartas[i].aliado != aliado))
+                {
+                    comportamientos.cartas[i].ataque -=2;
+                    if (comportamientos.cartas[i].ataque <= 0)
+                    {
+                        comportamientos.cartas[i].ataque = 0;
+                    }
+                }
+            }
         }
         if (tipo == TipoCarta.Cruzadas)
         {
@@ -201,6 +281,7 @@ public class Cartas : MonoBehaviour
                     {
                         if ((comportamientos.enemigos[i] != null) && (comportamientos.aliados[i] == null))
                         {
+                            comportamientos.aliados[i] = null;
                             casilla = i;
                             i++;
                             casillaactual = GameObject.Find("Casilla " + i);
@@ -218,6 +299,7 @@ public class Cartas : MonoBehaviour
                     {
                         if ((comportamientos.enemigos[i] == null) && (comportamientos.aliados[i] != null))
                         {
+                            comportamientos.aliados[i]=null;
                             casilla = i;
                             i++;
                             casillaactual = GameObject.Find("Casilla B " + i);
@@ -227,7 +309,6 @@ public class Cartas : MonoBehaviour
                     }
                 }
             }
-            comportamientos.RealizarDaño(ataque, casilla, aliado);
         }
         if (tipo == TipoCarta.Inquisicion)
         {
@@ -251,11 +332,46 @@ public class Cartas : MonoBehaviour
         }
         if (tipo == TipoCarta.Constantinopla)
         {
-            comportamientos.turno = 0;
-            comportamientos.RealizarDaño(ataque, casilla, aliado);
+            if (comportamientos.repeticiones == 0)
+            {
+                comportamientos.turno = 1;
+            }
+            comportamientos.repeticiones = 1;
         }
-
-        else
+        if (tipo == TipoCarta.Guerra30)
+        {
+            comportamientos.DañarEnArea(true, ataque);
+            comportamientos.DañarEnArea(false, ataque);
+        }
+        if (tipo == TipoCarta.TierraNoPlana)
+        {
+            for (int i = 0; i < comportamientos.cartas.Length; i++)
+            {
+                if ((comportamientos.cartas[i] != null) && (comportamientos.cartas[i].aliado!=aliado))
+                {
+                    comportamientos.cartas[i].aliado = !aliado;
+                    comportamientos.cartas[i].comportamientos.RealizarDaño(comportamientos.cartas[i].ataque, i, comportamientos.cartas[i].aliado);
+                    comportamientos.cartas[i].aliado = !aliado;
+                }
+            }
+        }
+        if (tipo == TipoCarta.Holocausto)
+        {
+            for (int i = 0; i < comportamientos.cartas.Length; i++)
+            {
+                if ((comportamientos.cartas[i] != null) && (comportamientos.cartas[i].aliado != aliado))
+                {
+                    int numero = Random.Range(1, 3);
+                    if (numero == 2)
+                    {
+                        comportamientos.cartas[i].defensa = 0;
+                        comportamientos.cartas[i].Morir();
+                    }
+                }
+            }
+        }
+        if ((tipo!=TipoCarta.Holocausto)&& (tipo != TipoCarta.Covid) && (tipo != TipoCarta.Guerra30) && 
+                (tipo != TipoCarta.Inquisicion) && (tipo != TipoCarta.PesteNegra))
         {
             comportamientos.RealizarDaño(ataque, casilla, aliado);
         }

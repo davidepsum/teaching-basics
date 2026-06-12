@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 948b58b3e2d3a69428f3e6c88f354355
+guid: 51fc2314ad92738458d5bbdb1ed4f683
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7762681336268491039
-    second: Iglesias-protestantes(11-6-2026-12_54)_0
+      213: 3979370644375613614
+    second: Iglesia-protestantes(12-6-2026-11_23)_0
   - first:
-      213: -4857244724867247833
-    second: Iglesias-protestantes(11-6-2026-12_54)_1
+      213: 5441473693412727893
+    second: Iglesia-protestantes(12-6-2026-11_23)_1
   - first:
-      213: 5589835620936016015
-    second: Iglesias-protestantes(11-6-2026-12_54)_2
+      213: 4249622723320464295
+    second: Iglesia-protestantes(12-6-2026-11_23)_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,7 +132,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Iglesias-protestantes(11-6-2026-12_54)_0
+      name: Iglesia-protestantes(12-6-2026-11_23)_0
       rect:
         serializedVersion: 2
         x: 3
@@ -146,14 +146,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1e6792ff37a654490800000000000000
-      internalID: -7762681336268491039
+      spriteID: ea030a77480993730800000000000000
+      internalID: 3979370644375613614
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Iglesias-protestantes(11-6-2026-12_54)_1
+      name: Iglesia-protestantes(12-6-2026-11_23)_1
       rect:
         serializedVersion: 2
         x: 9
@@ -167,14 +167,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 721d52358a9979cb0800000000000000
-      internalID: -4857244724867247833
+      spriteID: 55c9f767e7ff38b40800000000000000
+      internalID: 5441473693412727893
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Iglesias-protestantes(11-6-2026-12_54)_2
+      name: Iglesia-protestantes(12-6-2026-11_23)_2
       rect:
         serializedVersion: 2
         x: 0
@@ -188,8 +188,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f8067ba81e5139d40800000000000000
-      internalID: 5589835620936016015
+      spriteID: 7a3c1f4f951b9fa30800000000000000
+      internalID: 4249622723320464295
       vertices: []
       indices: 
       edges: []
@@ -205,9 +205,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Iglesias-protestantes(11-6-2026-12_54)_0: -7762681336268491039
-      Iglesias-protestantes(11-6-2026-12_54)_1: -4857244724867247833
-      Iglesias-protestantes(11-6-2026-12_54)_2: 5589835620936016015
+      Iglesia-protestantes(12-6-2026-11_23)_0: 3979370644375613614
+      Iglesia-protestantes(12-6-2026-11_23)_1: 5441473693412727893
+      Iglesia-protestantes(12-6-2026-11_23)_2: 4249622723320464295
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

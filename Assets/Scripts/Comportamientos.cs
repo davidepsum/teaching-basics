@@ -47,26 +47,50 @@ public class Comportamientos : MonoBehaviour
     }
     public void RealizarDaño(int daño,int casilla,bool aliado)
     {
+        bool global=false;
+        int numeroglobal=9;
+        for (int i = 0; i < cartas.Length; i++)
+        {
+            if ((cartas[i]!=null)&&(cartas[i].tipo == TipoCarta.Internet)&& (cartas[i].aliado!=aliado))
+            {
+                global = true;
+                numeroglobal = i;
+            }
+        }
         if (aliado == true)
         {
-            if (enemigos[casilla] == null)
+            if ((global == true) && (enemigos[casilla] == null))
             {
-                manager.vidaEnemigo -= daño;
+                enemigos[numeroglobal].defensa -= daño;
             }
             else
             {
-                enemigos[casilla].defensa -= daño;
+                if (enemigos[casilla] == null)
+                {
+                    manager.vidaEnemigo -= daño;
+                }
+                else
+                {
+                    enemigos[casilla].defensa -= daño;
+                }
             }
         }
         if (aliado == false)
         {
-            if (aliados[casilla] == null)
+            if ((global == true) && (aliados[casilla] == null))
             {
-                manager.vidaAliado -= daño;
+                aliados[numeroglobal].defensa -= daño;
             }
             else
             {
-                aliados[casilla].defensa -= daño;
+                if (aliados[casilla] == null)
+                {
+                    manager.vidaAliado -= daño;
+                }
+                else
+                {
+                    aliados[casilla].defensa -= daño;
+                }
             }
         }
     }
@@ -87,19 +111,28 @@ public class Comportamientos : MonoBehaviour
         {
             if ((cartas[i] != null) && (cartas[i].aliado == aliado) && (tipo != cartas[i].tipo))
             {
-                if ((tipo == TipoCarta.Escritura)||(tipo==TipoCarta.Feudalismo))
+                if ((tipo == TipoCarta.Escritura)||(tipo==TipoCarta.Feudalismo) || (tipo == TipoCarta.Renacimiento))
                 {
                     cartas[i].ataque+=cantidad;
                 }
                 if (tipo == TipoCarta.Feudalismo)
                 {
                     cartas[i].defensa -= cantidad;
+                    cartas[i].Morir();
                 }
-                cartas[i].defensa += cantidad;
+                else
+                {
+                    cartas[i].defensa += cantidad;
+                }
                 cartas[i].ActualizarEstadísticas();
             }
         }
     }
+    [HideInInspector]
+    public int repeticiones=0;
+    [HideInInspector]
+    public bool saltar=false;
+    public int sumarmana;
     public void EmpezarTurno()
     {
         pasaTurnos.interactable = false;
@@ -109,10 +142,18 @@ public class Comportamientos : MonoBehaviour
             if ((turnoaliado == true) && (aliados[turno - 1] != null))
             {
                 aliados[turno - 1].activarEfecto();
+                if ((enemigos[turno-1]!=null)&&(enemigos[turno - 1].tipo == TipoCarta.Calentamiento))
+                {
+                    enemigos[turno - 1].activarEfecto();
+                }
             }
             if ((turnoaliado == false)&& (enemigos[turno-1] != null))
             {
                 enemigos[turno - 1].activarEfecto();
+                if ((aliados[turno - 1] != null) && (aliados[turno - 1].tipo == TipoCarta.Calentamiento))
+                {
+                    aliados[turno - 1].activarEfecto();
+                }
             }
             for (int i = 0; i < aliados.Length; i++)
             {
@@ -129,9 +170,20 @@ public class Comportamientos : MonoBehaviour
             }
         }while (turno < 4);
         turno = 0;
+        repeticiones = 0;
         pasaTurnos.interactable = true;
-        turnoaliado = !turnoaliado;
-        manager.MostrarCartas();
+        if (saltar == false)
+        {
+            turnoaliado = !turnoaliado;
+        }
+        else
+        {
+            saltar = false;
+        }
+        Debug.Log("turno alido: "+turnoaliado);
+        manager.manaEnemigo += sumarmana;
+        manager.manaAliado += sumarmana;
+            manager.MostrarCartas();
         for (int i = 0;i < cartas.Length; i++)
         {
             if (cartas[i] != null)

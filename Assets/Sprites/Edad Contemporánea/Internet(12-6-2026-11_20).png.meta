@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 09d2e938926f4574a880f7423087de25
+guid: d329b1e8fe37fe04581923f4a7969f70
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -367800133927545214
-    second: Internet(11-6-2026-13_17)_0
+      213: 6621679038276978358
+    second: Internet(12-6-2026-11_20)_0
   - first:
-      213: -5093130241261683705
-    second: Internet(11-6-2026-13_17)_1
+      213: 3130670584205073592
+    second: Internet(12-6-2026-11_20)_1
   - first:
-      213: 6279120303770804637
-    second: Internet(11-6-2026-13_17)_2
+      213: -6183830327750283468
+    second: Internet(12-6-2026-11_20)_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,7 +132,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Internet(11-6-2026-13_17)_0
+      name: Internet(12-6-2026-11_20)_0
       rect:
         serializedVersion: 2
         x: 3
@@ -146,14 +146,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 28658e41abf45eaf0800000000000000
-      internalID: -367800133927545214
+      spriteID: 6b6462d800ee4eb50800000000000000
+      internalID: 6621679038276978358
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Internet(11-6-2026-13_17)_1
+      name: Internet(12-6-2026-11_20)_1
       rect:
         serializedVersion: 2
         x: 9
@@ -167,14 +167,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 70c3cc6b7019159b0800000000000000
-      internalID: -5093130241261683705
+      spriteID: 8bcde403f40627b20800000000000000
+      internalID: 3130670584205073592
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Internet(11-6-2026-13_17)_2
+      name: Internet(12-6-2026-11_20)_2
       rect:
         serializedVersion: 2
         x: 0
@@ -188,8 +188,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d91a338e5aae32750800000000000000
-      internalID: 6279120303770804637
+      spriteID: 43f282b841f9e2aa0800000000000000
+      internalID: -6183830327750283468
       vertices: []
       indices: 
       edges: []
@@ -205,9 +205,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Internet(11-6-2026-13_17)_0: -367800133927545214
-      Internet(11-6-2026-13_17)_1: -5093130241261683705
-      Internet(11-6-2026-13_17)_2: 6279120303770804637
+      Internet(12-6-2026-11_20)_0: 6621679038276978358
+      Internet(12-6-2026-11_20)_1: 3130670584205073592
+      Internet(12-6-2026-11_20)_2: -6183830327750283468
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
